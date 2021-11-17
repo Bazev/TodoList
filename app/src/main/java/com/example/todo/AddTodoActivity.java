@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.todo.DAO.TodoDAO;
 import com.example.todo.pojos.Todo;
 
 import java.io.Serializable;
@@ -30,7 +31,8 @@ public class AddTodoActivity extends AppCompatActivity {
     private Todo todo;
     private EditText etTodo;
     private Context context;
-
+    private TodoDAO todoDAO;
+    private Spinner spUrgency;
 
 
     @Override
@@ -41,8 +43,9 @@ public class AddTodoActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         btnCancel = findViewById(R.id.btnCancel);
         etTodo = findViewById(R.id.etTodo);
-        context =getApplicationContext();
-
+        spUrgency = findViewById(R.id.spTodo);
+        context = getApplicationContext();
+        todoDAO = new TodoDAO(context);
 
         Spinner spinner = (Spinner) findViewById(R.id.spTodo);
 
@@ -65,6 +68,9 @@ public class AddTodoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+
+
                 if (etTodo.getText().length() < 3) {
                     Toast toast = Toast.makeText(context, "3 caractères minimum", Toast.LENGTH_SHORT);
                     toast.show();
@@ -75,7 +81,7 @@ public class AddTodoActivity extends AppCompatActivity {
                 resultIntent.putExtra(KEY_TODO, todo);
                 setResult(RESULT_OK, resultIntent);
                 finish();
-
+                todoDAO.add(todo);
                 spinnerArrayAdapter.notifyDataSetChanged();
             }
         });
@@ -88,7 +94,6 @@ public class AddTodoActivity extends AppCompatActivity {
                 finish();
             }
         });
-
 
     }
 }
