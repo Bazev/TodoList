@@ -61,7 +61,7 @@ public class TodoDAO extends DAO {
         ContentValues values = new ContentValues();
         values.put(TodoDbHelper.TODO_NAME, todo.getName());
         values.put(TodoDbHelper.TODO_URGENCY, todo.getUrgency());
-        long id = db.insert(TodoDbHelper.TODO_TABLE_NAME, null, values);
+        Long id = db.insert(TodoDbHelper.TODO_TABLE_NAME, null, values);
         todo.setId(id);
         close();
     }

@@ -48,7 +48,6 @@ public class AddTodoActivity extends AppCompatActivity {
         todoDAO = new TodoDAO(context);
 
         Spinner spinner = (Spinner) findViewById(R.id.spTodo);
-
         String[] priority = new String[]{
                 "Basse",
                 "Normal",
@@ -68,29 +67,20 @@ public class AddTodoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-
-
                 if (etTodo.getText().length() < 3) {
                     Toast toast = Toast.makeText(context, "3 caractères minimum", Toast.LENGTH_SHORT);
                     toast.show();
                 } else {
                     todo = new Todo(etTodo.getText().toString(), spinner.getSelectedItem().toString());
                 }
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra(KEY_TODO, todo);
-                setResult(RESULT_OK, resultIntent);
                 finish();
                 todoDAO.add(todo);
-                spinnerArrayAdapter.notifyDataSetChanged();
             }
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                setResult(RESULT_CANCELED, intent);
+            public void onClick(View view) {
                 finish();
             }
         });
