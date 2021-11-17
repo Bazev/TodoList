@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Context context;
     private TextView tvTodo;
+    private final String KEY_TODOS = "todos";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +30,14 @@ public class MainActivity extends AppCompatActivity {
         tvTodo = findViewById(R.id.tvTodo);
 
         if (savedInstanceState != null) {
-            tvTodo.setText(savedInstanceState.getString(AddTodoActivity.KEY_TODO));
+            tvTodo.setText(savedInstanceState.getString(KEY_TODOS));
         }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        outState.putString(AddTodoActivity.KEY_TODO, tvTodo.getText().toString());
+        outState.putString(KEY_TODOS,  tvTodo.getText().toString());
     }
 
     @Override
