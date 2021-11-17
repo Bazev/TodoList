@@ -43,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        showTodos();
         super.onStart();
+        TodoAsyncTasks todoAsyncTasks = new TodoAsyncTasks();
+        todoAsyncTasks.execute();
     }
 
     @Override
