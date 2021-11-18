@@ -3,18 +3,19 @@ package com.example.todo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.todo.DAO.TodoDAO;
+import com.example.todo.adapters.TodoAdapter;
 import com.example.todo.pojos.Todo;
 
 import java.util.ArrayList;
@@ -24,21 +25,27 @@ public class MainActivity extends AppCompatActivity {
 
     private Context context;
     private TextView tvTodo;
-    private final String KEY_TODOS = "todos";
+    //private final String KEY_TODOS = "todos";
     private TodoDAO todoDAO;
     private List<Todo> todos;
+    private RecyclerView recyclerView;
+    private TodoAdapter todoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.recyclerview_main);
         context = getApplicationContext();
-        tvTodo = findViewById(R.id.tvTodo);
+        recyclerView = findViewById(R.id.rvTodo);
         todoDAO = new TodoDAO(context);
 
-        if (savedInstanceState != null) {
-            tvTodo.setText(savedInstanceState.getString(KEY_TODOS));
-        }
+
+//        if (savedInstanceState != null) {
+//            tvTodo.setText(savedInstanceState.getString(KEY_TODOS));
+//        }
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -48,11 +55,11 @@ public class MainActivity extends AppCompatActivity {
         todoAsyncTasks.execute();
     }
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(KEY_TODOS, tvTodo.getText().toString());
-    }
+//    @Override
+//    protected void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putString(KEY_TODOS, tvTodo.getText().toString());
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuTodo:
+                /*
+                Créer un intent pour ensuite démarrer CheatActivity
+                 */
                 Intent intent = new Intent(context, AddTodoActivity.class);
                 startActivity(intent);
                 return true;
@@ -97,9 +107,15 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Todo> todos) {
-            StringBuilder stringBuilder = new StringBuilder();
-            showTodos();
-            tvTodo.setText(stringBuilder.toString());
+
+            /*
+            Créer l'adapter en lui passant la liste
+             */
+            todoAdapter = new TodoAdapter(todos);
+            recyclerView.setAdapter(todoAdapter);
+//            StringBuilder stringBuilder = new StringBuilder();
+//            showTodos();
+//            tvTodo.setText(stringBuilder.toString());
         }
     }
 
